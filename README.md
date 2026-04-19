@@ -59,8 +59,5 @@ How to Run
     # Example call
     fuzzy_inference(p_value=70, a_value=80, e_value=65, abs_value=5)
 
-Deliverables
-
-    - System Files: The source code provided in this repository.
-
-    - Documentation: This README.md file along with the project's manual (see Εγχειρίδιο Χρήσης.pdf for further details on system operation).
+---
+*Developed as an individual project for the MSc in Informatics.*
