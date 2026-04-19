@@ -10,26 +10,26 @@ Overview
 
 The system processes four input variables to provide an automated performance evaluation:
 
-    Participation: 0–100% (Low, Medium, High) 
+    - Participation: 0–100% (Low, Medium, High) 
 
-    Assignment Grades: 0–100 (Poor, Average, Good) 
+    - Assignment Grades: 0–100 (Poor, Average, Good) 
 
-    Exam Grades: 0–100 (Poor, Average, Good) 
+    - Exam Grades: 0–100 (Poor, Average, Good) 
 
-    Absences: 0–30 (Few, Many) 
+    - Absences: 0–30 (Few, Many) 
 
 The system provides a final Performance output on a scale of 0–100.
 Methodology
 
 The system follows a standard Fuzzy Inference process to determine the outcome:
 
-    Fuzzification: Input values (e.g., participation percentage) are converted into fuzzy sets (Low, Medium, High, etc.).
+    - Fuzzification: Input values (e.g., participation percentage) are converted into fuzzy sets (Low, Medium, High, etc.).
 
-    Rule Application: The system utilizes a knowledge base of 54 IF-THEN rules to evaluate the inputs.
+    - Rule Application: The system utilizes a knowledge base of 54 IF-THEN rules to evaluate the inputs.
 
-    Aggregation: Partial results are combined into a single fuzzy output set.
+    - Aggregation: Partial results are combined into a single fuzzy output set.
 
-    Defuzzification: The final numerical (crisp) performance value is calculated using the Centroid method.
+    - Defuzzification: The final numerical (crisp) performance value is calculated using the Centroid method.
 
 Prerequisites
 
@@ -46,14 +46,14 @@ pip install numpy matplotlib
 
 How to Run
 
-    Ensure the required libraries are installed.
+    - Ensure the required libraries are installed.
 
-    Run the Python script in your IDE (e.g., VS Code, PyCharm) or terminal:
+    - Run the Python script in your IDE (e.g., VS Code, PyCharm) or terminal:
     Bash
 
     python student_performance_system.py
 
-    The script executes the fuzzy_inference function. You can modify the parameters at the bottom of the script:
+    - The script executes the fuzzy_inference function. You can modify the parameters at the bottom of the script:
     Python
 
     # Example call
@@ -61,6 +61,6 @@ How to Run
 
 Deliverables
 
-    System Files: The source code provided in this repository.
+    - System Files: The source code provided in this repository.
 
-    Documentation: This README.md file along with the project's manual (see Εγχειρίδιο Χρήσης.pdf for further details on system operation).
+    - Documentation: This README.md file along with the project's manual (see Εγχειρίδιο Χρήσης.pdf for further details on system operation).
