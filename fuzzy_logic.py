@@ -1,13 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Ορισμός μιας τριγωνικής συνάρτησης συμμετοχής
+# Definition of a triangular membership function
 def trimf(x, params):
     a, b, c = params
     x = np.array(x, dtype=float)
     return np.maximum(np.minimum((x - a) / (b - a + 1e-9), (c - x) / (c - b + 1e-9)), 0.0)
 
-# Ορισμός μιας τραπεζοειδούς συνάρτησης συμμετοχής
+# Definition of a trapezoidal membership function
 def trapmf(x, params):
     x = np.array(x)
     a, b, c, d = params
@@ -16,8 +16,8 @@ def trapmf(x, params):
             np.where(x <= c, 1,
                 np.where(x <= d, (d - x) / (d - c), 0))))
 
-# οπτικοποίηση των συναρτήσεων συμμετοχής χρησιμοποιώντας τη Matplotlib
-def plot_membership(x, y, labels, title):
+# visualization of membership functions using Matplotlib
+    def plot_membership(x, y, labels, title):
     plt.figure(figsize=(6,4))
     for i in range(len(y)):
         plt.plot(x, y[i], label=labels[i])
@@ -28,14 +28,14 @@ def plot_membership(x, y, labels, title):
     plt.grid(True)
     plt.show()
 
-# ορισμός του γενικού περιβάλλοντος των γραφημάτων
+# define the general context of the graphs
 P = np.arange(0, 101, 1)   # Συμμετοχή 0-100%
 A = np.arange(0, 101, 1)   # Βαθμός εργασίας 0-100
 E = np.arange(0, 101, 1)   # Βαθμός εξέτασης 0-100
 Abs = np.arange(0, 31, 1)  # Απουσίες 0-30 days
 Perf = np.arange(0, 101, 1) # Απόδοση 0-100
 
-# ορισμός των ασαφών συνόλων
+# definition of fuzzy sets
 P_low = trimf(P, [0, 25, 50])
 P_med = trimf(P, [25, 50, 75])
 P_high = trimf(P, [50, 100, 100])
@@ -55,16 +55,16 @@ Perf_low = trimf(Perf, [0, 25, 50])
 Perf_med = trimf(Perf, [30, 50, 70])
 Perf_high= trimf(Perf, [50, 100, 100])
 
-# γραφική αναπαράσταση των ασαφών συνόλων
+# graphical representation of fuzzy sets
 plot_membership(P, [P_low, P_med, P_high], ["Low", "Medium", "High"], "Participation")
 plot_membership(A, [A_poor, A_avg, A_good], ["Poor", "Average", "Good"], "Assignments")
 plot_membership(E, [E_poor, E_avg, E_good], ["Poor", "Average", "Good"], "Exams")
 plot_membership(Abs, [Abs_few, Abs_many], ["Few", "Many"], "Absences")
 plot_membership(Perf, [Perf_low, Perf_med, Perf_high], ["Low", "Medium", "High"], "Performance (Output)")
 
-# Κανόνες
+# Rules
 rules = [
-    # Χαμήλη συμμετοχή
+    # Low participation
     (lambda f: min(f['P_low'], f['A_poor'], f['E_poor'], f['Abs_few']), 'Low',
      "IF Participation=Low AND Assignments=Poor AND Exams=Poor AND Absences=Few THEN Performance=Low"),
     (lambda f: min(f['P_low'], f['A_poor'], f['E_poor'], f['Abs_many']), 'Low',
@@ -104,7 +104,7 @@ rules = [
     (lambda f: min(f['P_low'], f['A_good'], f['E_good'], f['Abs_many']), 'Low',
      "IF Participation=Low AND Assignments=Good AND Exams=Good AND Absences=Many THEN Performance=Low"),
 
-    # Μέτρια συμμετοχή
+    # Average participation
     (lambda f: min(f['P_med'], f['A_poor'], f['E_poor'], f['Abs_few']), 'Low',
      "IF Participation=Medium AND Assignments=Poor AND Exams=Poor AND Absences=Few THEN Performance=Low"),
     (lambda f: min(f['P_med'], f['A_poor'], f['E_poor'], f['Abs_many']), 'Low',
@@ -144,7 +144,7 @@ rules = [
     (lambda f: min(f['P_med'], f['A_good'], f['E_good'], f['Abs_many']), 'High',
      "IF Participation=Medium AND Assignments=Good AND Exams=Good AND Absences=Many THEN Performance=High"),
 
-    # Υψηλή συμμετοχή
+    # High participation
     (lambda f: min(f['P_high'], f['A_poor'], f['E_poor'], f['Abs_few']), 'Low',
      "IF Participation=High AND Assignments=Poor AND Exams=Poor AND Absences=Few THEN Performance=Low"),
     (lambda f: min(f['P_high'], f['A_poor'], f['E_poor'], f['Abs_many']), 'Low',
@@ -185,10 +185,10 @@ rules = [
      "IF Participation=High AND Assignments=Good AND Exams=Good AND Absences=Many THEN Performance=High"),
 ]
 
-# Ασαφοποίηση της εισόδου
+# Input obfuscation
 def fuzzy_inference(p_value, a_value, e_value, abs_value):
 
-    # Υπολογισμός membership values για συγκεκριμένες εισόδους
+# Calculate membership values ​​for specific inputs
     f = {
         'P_low':  trimf([p_value], [0, 25, 50])[0],
         'P_med':  trimf([p_value], [25, 50, 75])[0],
@@ -206,14 +206,14 @@ def fuzzy_inference(p_value, a_value, e_value, abs_value):
         'Abs_many': trimf([abs_value], [10, 20, 30])[0],
     }
 
-    # Αρχικοποίηση aggregated output
+    # Initialize aggregated output
     agg_low = np.zeros_like(Perf, dtype=float)
     agg_med = np.zeros_like(Perf, dtype=float)
     agg_high = np.zeros_like(Perf, dtype=float)
 
-    rules_applied = []  # λίστα για να αποθηκεύουμε ποιοί κανόνες ενεργοποιούνται
+    rules_applied = []  # list to store which rules are triggered
 
-    # Εκτέλεση κανόνων
+    # Rule execution
     for i, (rule, outcome, description) in enumerate(rules, start=1):
         activation = rule(f)
         if activation > 0:
@@ -225,19 +225,18 @@ def fuzzy_inference(p_value, a_value, e_value, abs_value):
             elif outcome == 'High':
                 agg_high = np.maximum(agg_high, np.minimum(activation, Perf_high))
 
-    # Ένωση των outputs
+    # Union of outputs
     aggregated = np.maximum(agg_low, np.maximum(agg_med, agg_high))
 
-    # Ασαφοποίηση χρησιμοποιώντας Centroid
+    # Blurring using Centroid    
     if np.sum(aggregated) == 0:
         crisp_value = 0
     else:
         crisp_value = np.sum(Perf * aggregated) / np.sum(aggregated)
 
-    # Εκτυπώσεις
     print(f"\nInput values: Participation={p_value}, Assignment grade={a_value}, Exam grade={e_value}, Absences={abs_value}")
 
-    # εμφάνιση των υπολογισόμενων τιμών
+    # display the calculated values
     print(f">Fuzzified values for Participation={p_value}:")
     print(f" Low: {f['P_low']:.2f}")
     print(f" Medium: {f['P_med']:.2f}")
